@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import Icon from '@/components/ui/icon';
+import MatrixRain from '@/components/MatrixRain';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('');
@@ -88,7 +89,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      <div className="matrix-bg fixed inset-0 z-0 opacity-10" />
+      <MatrixRain />
       
       <nav className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-neon-green/20">
         <div className="container mx-auto px-4 py-4">
@@ -197,66 +198,63 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="tariffs" className="py-20 relative z-10 bg-darker-bg/50">
+      <section id="tariffs" className="py-20 relative z-10">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 font-mono">
-            <span className="text-neon-orange text-shadow-neon">ТАРИФЫ</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 font-mono">
+            <span className="text-neon-green text-shadow-neon">ВЫБЕРИТЕ ТАРИФ</span>
           </h2>
-          <p className="text-center text-gray-400 mb-12 text-lg">Выберите свой путь в мир нейросетей</p>
           
           <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {tariffs.map((tariff, idx) => (
-              <Card 
+              <div 
                 key={idx}
-                className={`bg-dark-bg border-${tariff.color}/50 relative overflow-hidden hover:scale-105 transition-transform duration-300 ${
-                  tariff.popular ? 'ring-2 ring-neon-green' : ''
-                }`}
+                className="cyber-card group relative"
+                style={{
+                  '--border-color': tariff.color === 'neon-blue' ? '#0EA5E9' : 
+                                    tariff.color === 'neon-green' ? '#10b981' : '#F97316'
+                } as React.CSSProperties}
               >
-                {tariff.popular && (
-                  <div className="absolute top-4 right-4 bg-neon-green text-black px-3 py-1 rounded-full text-sm font-bold">
-                    ПОПУЛЯРНЫЙ
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className={`text-${tariff.color} text-2xl font-mono`}>
+                <div className="cyber-card-inner relative p-8 h-full flex flex-col">
+                  <div className="circuit-pattern absolute inset-0 opacity-10"></div>
+                  
+                  <h3 className="text-2xl font-bold mb-4 relative z-10 text-center" 
+                      style={{ color: tariff.color === 'neon-blue' ? '#0EA5E9' : 
+                                      tariff.color === 'neon-green' ? '#10b981' : '#F97316' }}>
                     {tariff.name}
-                  </CardTitle>
-                  <CardDescription className="text-gray-400">
-                    <span className="font-mono text-lg">{tariff.hours}</span>
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="text-sm text-gray-300">
-                    <p className="font-semibold text-white mb-1">Для кого:</p>
-                    <p>{tariff.audience}</p>
+                  </h3>
+                  
+                  <p className="text-3xl font-mono font-bold text-center mb-6 text-white relative z-10">
+                    {tariff.hours}
+                  </p>
+                  
+                  <p className="text-center text-gray-300 mb-4 text-sm relative z-10">
+                    {tariff.audience}
+                  </p>
+                  
+                  <div className="flex-grow flex items-center justify-center my-6 relative z-10">
+                    <p className="text-center text-gray-400 text-sm italic">
+                      {tariff.goal}
+                    </p>
                   </div>
-                  <div className="text-sm text-gray-300">
-                    <p className="font-semibold text-white mb-1">Цель:</p>
-                    <p>{tariff.goal}</p>
-                  </div>
-                  <div className="border-t border-gray-700 pt-4">
-                    <p className="text-3xl font-bold text-white mb-4 font-mono">
+                  
+                  <div className="text-center mb-6 relative z-10">
+                    <p className="text-4xl font-bold font-mono text-white">
                       {tariff.price} ₽
                     </p>
-                    <ul className="space-y-2">
-                      {tariff.features.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                          <Icon name="Check" size={16} className={`text-${tariff.color} mt-1 flex-shrink-0`} />
-                          <span>{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    className={`w-full bg-${tariff.color} hover:bg-${tariff.color}/80 text-black font-bold glow-${tariff.color.split('-')[1]}`}
+                  
+                  <button 
+                    className="cyber-button w-full py-3 font-bold uppercase tracking-wider relative z-10"
+                    style={{
+                      '--btn-color': tariff.color === 'neon-blue' ? '#0EA5E9' : 
+                                     tariff.color === 'neon-green' ? '#10b981' : '#F97316'
+                    } as React.CSSProperties}
                     onClick={() => scrollToSection('contact')}
                   >
-                    Записаться
-                  </Button>
-                </CardFooter>
-              </Card>
+                    ВЫБРАТЬ ТАРИФ
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -429,16 +427,92 @@ const Index = () => {
       </footer>
 
       <style>{`
-        .matrix-bg {
-          background: linear-gradient(0deg, transparent 24%, rgba(16, 185, 129, 0.05) 25%, rgba(16, 185, 129, 0.05) 26%, transparent 27%, transparent 74%, rgba(16, 185, 129, 0.05) 75%, rgba(16, 185, 129, 0.05) 76%, transparent 77%, transparent),
-                      linear-gradient(90deg, transparent 24%, rgba(16, 185, 129, 0.05) 25%, rgba(16, 185, 129, 0.05) 26%, transparent 27%, transparent 74%, rgba(16, 185, 129, 0.05) 75%, rgba(16, 185, 129, 0.05) 76%, transparent 77%, transparent);
-          background-size: 50px 50px;
-          animation: matrix-scroll 20s linear infinite;
+        .cyber-card {
+          position: relative;
+          background: rgba(10, 25, 47, 0.8);
+          backdrop-filter: blur(10px);
+          transition: all 0.3s ease;
         }
         
-        @keyframes matrix-scroll {
-          0% { background-position: 0 0; }
-          100% { background-position: 50px 50px; }
+        .cyber-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          padding: 2px;
+          background: linear-gradient(135deg, var(--border-color), transparent, var(--border-color));
+          -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          border-radius: 16px;
+          opacity: 0.8;
+          transition: all 0.3s ease;
+        }
+        
+        .cyber-card::after {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: 20%;
+          width: 60%;
+          height: 4px;
+          background: var(--border-color);
+          box-shadow: 0 0 20px var(--border-color);
+          clip-path: polygon(0 0, 5% 0, 10% 100%, 15% 100%, 20% 0, 30% 0, 35% 100%, 40% 100%, 45% 0, 55% 0, 60% 100%, 65% 100%, 70% 0, 80% 0, 85% 100%, 90% 100%, 95% 0, 100% 0, 100% 100%, 0 100%);
+        }
+        
+        .cyber-card:hover {
+          transform: translateY(-8px);
+        }
+        
+        .cyber-card:hover::before {
+          opacity: 1;
+          box-shadow: 0 0 40px var(--border-color);
+        }
+        
+        .cyber-card-inner {
+          background: rgba(0, 0, 0, 0.6);
+          border-radius: 14px;
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .circuit-pattern {
+          background-image: 
+            linear-gradient(90deg, var(--border-color) 1px, transparent 1px),
+            linear-gradient(0deg, var(--border-color) 1px, transparent 1px),
+            radial-gradient(circle at 20% 30%, var(--border-color) 2px, transparent 2px),
+            radial-gradient(circle at 80% 70%, var(--border-color) 2px, transparent 2px);
+          background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
+          background-position: 0 0, 0 0, 0 0, 0 0;
+        }
+        
+        .cyber-button {
+          background: transparent;
+          border: 2px solid var(--btn-color);
+          color: var(--btn-color);
+          position: relative;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          clip-path: polygon(8% 0, 100% 0, 100% 70%, 92% 100%, 0 100%, 0 30%);
+        }
+        
+        .cyber-button::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: var(--btn-color);
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+          z-index: -1;
+        }
+        
+        .cyber-button:hover {
+          color: #000;
+          box-shadow: 0 0 20px var(--btn-color);
+        }
+        
+        .cyber-button:hover::before {
+          transform: translateX(0);
         }
       `}</style>
     </div>
